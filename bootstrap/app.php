@@ -63,6 +63,7 @@ $app->configure('app');
 
 // initialize auth configuration
 $app->configure('auth');
+$app->configure('jwt');
 
 /*
 |--------------------------------------------------------------------------
@@ -101,8 +102,12 @@ $app->register(App\Providers\EventServiceProvider::class);
 $app->register(App\Providers\RouteServiceProvider::class);
 $app->register(Laravel\Passport\PassportServiceProvider::class);
 
- 
- 
+$app->register(Tymon\JWTAuth\Providers\LumenServiceProvider::class);
+
+
+
+
+
 /*
 |--------------------------------------------------------------------------
 | Load The Application Routes

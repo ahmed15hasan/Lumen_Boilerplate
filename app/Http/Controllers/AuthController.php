@@ -28,6 +28,7 @@ class AuthController extends Controller
      */
     public function login(Request $request) {
 
+        $credentials = request(['email', 'password']);
 
 
         $validator = Validator::make($request->all(), [
@@ -39,24 +40,12 @@ class AuthController extends Controller
             return response()->json(['error'=>$validator->errors()], 401);
         }
 
-
-        // $user = User::where(array('email' => $request->email))->first();
-
-        // if(!(Hash::check($request->password, $user->password))) {
-        //     return response()->json(['error'=>'password is incorrect'], 401);
-        // }
-
-
-        // $response['access_token'] = User::issueToken($request);
-        // $response['user_details'] = $user->toArray();
-
-        if(Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
-
-            $user  = Auth::user();
-            $token = $user->createToken('MyApplicationPilot')->accessToken;
-            return response()->json(['token' => $token], 200);
+        if (!$token = auth()->attempt($credentials)) {
+            return response()->json(['error' => 'Unauthorized'], 401);
         }
-        return response()->json(400);
+
+        return $this->respondWithToken($token);
+
 
     }
 

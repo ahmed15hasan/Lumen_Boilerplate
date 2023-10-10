@@ -6,9 +6,10 @@
     "type": "project",
     "require": {
         "php": "^8.0",
+        "guzzlehttp/guzzle": "7.4.5",
         "laravel/lumen-framework": "^9.0",
         "nomadnt/lumen-passport": "dev-main",
-        "guzzlehttp/guzzle": "7.4.5"
+        "tymon/jwt-auth": "^2.0"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",

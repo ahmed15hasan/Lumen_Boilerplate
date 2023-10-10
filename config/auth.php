@@ -14,7 +14,15 @@ return [
     */
 
     'defaults' => [
-        'guard' => env('AUTH_GUARD', 'api'),
+        'guard' => 'api',
+        'passwords' => 'users',
+    ],
+
+    'guards' => [
+        'api' => [
+            'driver' => 'jwt',
+            'provider' => 'users',
+        ],
     ],
 
 
@@ -35,9 +43,9 @@ return [
     |
     */
 
-    'guards' => [
-        'api' => ['driver' => 'passport', 'provider' => 'users']
-    ],
+    // 'guards' => [
+    //     'api' => ['driver' => 'passport', 'provider' => 'users']
+    // ],
 
 
 

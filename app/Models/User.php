@@ -4,7 +4,7 @@ namespace App\Models;
 
 use App\Models\OauthClients;
 use Exception;
-use Illuminate\Auth\Authenticatable; 
+use Illuminate\Auth\Authenticatable;
 use Laravel\Lumen\Auth\Authorizable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
@@ -15,9 +15,9 @@ use Illuminate\Http\Request;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\GuzzleException;
 
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
-
-class User extends Model implements AuthenticatableContract, AuthorizableContract
+class User extends Model implements AuthenticatableContract, AuthorizableContract, JWTSubject
 {
     use HasApiTokens, Authenticatable, Authorizable, HasFactory;
 
@@ -32,7 +32,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         if(empty($client)) {
             return ['statusCode' => '402'];
         }
-        
+
         $params = [
             'grant_type' => 'password',
             'client_id' => $client->id,
@@ -62,11 +62,11 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     * @param $params
     */
     public static function passportCall($url, $params) {
-        
+
         try{
             $passport = curlRequest('POST',config('app.url').($url),['form_params' => $params]);
             $response = json_decode($passport->getBody()->getContents(), true);
-            
+
             $response['statusCode'] = $passport->getStatusCode();
         }
         catch(ClientException $exception){
@@ -82,6 +82,21 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         }
 
         return $response;
+    }
+
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    /**
+     * Return a key value array, containing any custom claims to be added to the JWT.
+     *
+     * @return array
+     */
+    public function getJWTCustomClaims()
+    {
+        return [];
     }
 
 }
