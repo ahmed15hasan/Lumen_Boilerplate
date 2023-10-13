@@ -82,6 +82,7 @@ $app->configure('jwt');
 
 $app->routeMiddleware([
     'auth' => App\Http\Middleware\Authenticate::class,
+    'authentication' => App\Http\Middleware\ApiAuthMiddleware::class,
     'throttle' => Nomadnt\LumenPassport\Middleware\ThrottleRequests::class
 ]);
 
